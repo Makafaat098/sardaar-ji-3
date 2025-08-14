@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Unique 3D NFT Grid-Orbit</title>
+    <title>3D NFT Grid-Orbit with Auto-Cycle</title>
     <style>
         body {
             margin: 0;
@@ -55,6 +55,12 @@
             border: 3px solid #00f7ff;
         }
 
+        .nft-card a {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
         .nft-card img {
             width: 100%;
             height: 100%;
@@ -84,32 +90,40 @@
 </head>
 <body>
     <div class="showcase">
-        <!-- NFT cards -->
-        <div class="nft-card active"><img src="nft1.png" alt="NFT 1"></div>
-        <div class="nft-card bg"><img src="nft2.png" alt="NFT 2"></div>
-        <div class="nft-card bg"><img src="nft3.png" alt="NFT 3"></div>
-        <div class="nft-card bg"><img src="nft4.png" alt="NFT 4"></div>
-        <div class="nft-card bg"><img src="nft5.png" alt="NFT 5"></div>
-        <div class="nft-card bg"><img src="nft6.png" alt="NFT 6"></div>
-        <div class="nft-card bg"><img src="nft7.png" alt="NFT 7"></div>
-        <div class="nft-card bg"><img src="nft8.png" alt="NFT 8"></div>
-        <div class="nft-card bg"><img src="nft9.png" alt="NFT 9"></div>
+        <!-- NFT cards with random links -->
+        <div class="nft-card active"><a href="https://nft-link-1.com"><img src="nft1.png" alt="NFT 1"></a></div>
+        <div class="nft-card bg"><a href="https://nft-link-2.com"><img src="nft2.png" alt="NFT 2"></a></div>
+        <div class="nft-card bg"><a href="https://nft-link-3.com"><img src="nft3.png" alt="NFT 3"></a></div>
+        <div class="nft-card bg"><a href="https://nft-link-4.com"><img src="nft4.png" alt="NFT 4"></a></div>
+        <div class="nft-card bg"><a href="https://nft-link-5.com"><img src="nft5.png" alt="NFT 5"></a></div>
+        <div class="nft-card bg"><a href="https://nft-link-6.com"><img src="nft6.png" alt="NFT 6"></a></div>
+        <div class="nft-card bg"><a href="https://nft-link-7.com"><img src="nft7.png" alt="NFT 7"></a></div>
+        <div class="nft-card bg"><a href="https://nft-link-8.com"><img src="nft8.png" alt="NFT 8"></a></div>
+        <div class="nft-card bg"><a href="https://nft-link-9.com"><img src="nft9.png" alt="NFT 9"></a></div>
     </div>
 
     <script>
         const showcase = document.querySelector('.showcase');
         const nftCards = document.querySelectorAll('.nft-card');
         const nfts = [
-            'nft1.png', 'nft2.png', 'nft3.png', 'nft4.png', 'nft5.png',
-            'nft6.png', 'nft7.png', 'nft8.png', 'nft9.png'
+            { src: 'nft1.png', link: 'https://nft-link-1.com' },
+            { src: 'nft2.png', link: 'https://nft-link-2.com' },
+            { src: 'nft3.png', link: 'https://nft-link-3.com' },
+            { src: 'nft4.png', link: 'https://nft-link-4.com' },
+            { src: 'nft5.png', link: 'https://nft-link-5.com' },
+            { src: 'nft6.png', link: 'https://nft-link-6.com' },
+            { src: 'nft7.png', link: 'https://nft-link-7.com' },
+            { src: 'nft8.png', link: 'https://nft-link-8.com' },
+            { src: 'nft9.png', link: 'https://nft-link-9.com' }
         ];
         let currentIndex = 0;
         let isAnimating = false;
+        let isLoggedIn = false; // Demo flag; replace with actual auth logic
 
         // Preload images
-        nfts.forEach(src => {
+        nfts.forEach(nft => {
             const img = new Image();
-            img.src = src;
+            img.src = nft.src;
         });
 
         // Initialize showcase positions
@@ -137,8 +151,9 @@
                     card.style.transform = `translate3d(${pos.x}px, ${pos.y}px, ${pos.z}px) scale(0.7) rotate(${pos.rotate}deg)`;
                     card.style.opacity = pos.opacity;
                 }
-                card.querySelector('img').src = nfts[i];
+                card.querySelector('img').src = nfts[i].src;
                 card.querySelector('img').alt = `NFT ${i + 1}`;
+                card.querySelector('a').href = nfts[i].link;
             });
         }
 
@@ -167,6 +182,17 @@
             });
         }
 
+        // Handle link clicks
+        nftCards.forEach(card => {
+            card.querySelector('a').addEventListener('click', (e) => {
+                if (!isLoggedIn) {
+                    e.preventDefault();
+                    window.location.href = 'register.html';
+                }
+                // If logged in, allow default link behavior
+            });
+        });
+
         // Handle tap/click
         showcase.addEventListener('click', (e) => {
             const rect = showcase.getBoundingClientRect();
@@ -191,6 +217,11 @@
                 changeNFT(direction);
             }
         });
+
+        // Auto-cycle every second
+        setInterval(() => {
+            if (!isAnimating) changeNFT('right');
+        }, 1000);
 
         // Initialize showcase
         updateShowcase();
