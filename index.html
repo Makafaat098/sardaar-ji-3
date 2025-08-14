@@ -118,7 +118,11 @@
         ];
         let currentIndex = 0;
         let isAnimating = false;
-        let isLoggedIn = false; // Demo flag; replace with actual auth logic
+
+        // Check login status
+        function checkLoginStatus() {
+            return !!localStorage.getItem('userToken');
+        }
 
         // Preload images
         nfts.forEach(nft => {
@@ -185,7 +189,7 @@
         // Handle link clicks
         nftCards.forEach(card => {
             card.querySelector('a').addEventListener('click', (e) => {
-                if (!isLoggedIn) {
+                if (!checkLoginStatus()) {
                     e.preventDefault();
                     window.location.href = 'register.html';
                 }
@@ -218,10 +222,10 @@
             }
         });
 
-        // Auto-cycle every second
+        // Auto-cycle every 3 seconds
         setInterval(() => {
             if (!isAnimating) changeNFT('right');
-        }, 1000);
+        }, 3000);
 
         // Initialize showcase
         updateShowcase();
