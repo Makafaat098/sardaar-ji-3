@@ -3,108 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium NFT Collection</title>
+    <title>Dynamic NFT Scroll</title>
     <style>
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
             margin: 0;
             background: linear-gradient(135deg, #1a1a2e, #16213e);
             font-family: 'Poppins', sans-serif;
-            overflow: hidden;
+            min-height: 200vh; /* Ensure enough height for scrolling */
+            overflow-x: hidden;
         }
 
         .gallery {
             position: relative;
-            width: 300px;
-            height: 450px;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             perspective: 1500px;
         }
 
         .card {
             position: absolute;
-            width: 100%;
-            height: 100%;
-            transform-style: preserve-3d;
-            transition: transform 0.6s ease, opacity 0.8s ease, transform-origin 0.3s;
+            width: 300px;
+            height: 450px;
             opacity: 0;
             transform: translateY(100px) rotate(5deg); /* Initial tilt */
+            transition: transform 0.8s ease, opacity 0.8s ease;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
             border-radius: 15px;
+            border: 2px solid #ffd700;
+            overflow: hidden;
             z-index: 10;
         }
 
-        .card.visible {
+        .card.active {
             opacity: 1;
             transform: translateY(0) rotate(5deg); /* Maintain slight tilt */
         }
 
-        .card.flipped .card-inner {
-            transform: rotateY(180deg);
-        }
-
-        .card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            transition: transform 0.6s;
-            transform-style: preserve-3d;
-        }
-
-        .front, .back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            border-radius: 15px;
-            overflow: hidden;
-        }
-
-        .front {
-            background: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border: 2px solid #ffd700;
-        }
-
-        .front img {
+        .card img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             transition: transform 0.3s;
         }
 
-        .front:hover img {
+        .card:hover img {
             transform: scale(1.05); /* Subtle zoom on hover */
-        }
-
-        .back {
-            background: linear-gradient(135deg, #2a2a4e, #1e1e3a);
-            color: #fff;
-            transform: rotateY(180deg);
-            padding: 20px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            border: 2px solid #ffd700;
-        }
-
-        .back h2 {
-            margin: 0;
-            font-size: 1.5em;
-            color: #ffd700;
-        }
-
-        .back p {
-            margin: 5px 0;
-            font-size: 0.9em;
-            color: #ccc;
         }
 
         /* Background cards for stacked effect */
@@ -139,71 +85,71 @@
         <div class="bg-card"><img src="nft2.png" alt="NFT 2"></div>
         <div class="bg-card"><img src="nft3.png" alt="NFT 3"></div>
         <!-- Main card -->
-        <div class="card">
-            <div class="card-inner">
-                <div class="front"><img src="nft1.png" alt="NFT 1"></div>
-                <div class="back">
-                    <h2>Cosmic Voyager #1</h2>
-                    <p>Price: 0.5 ETH</p>
-                    <p>Rarity: Legendary</p>
-                    <p>Created: 2025-08-01</p>
-                </div>
-            </div>
+        <div class="card active">
+            <img src="nft1.png" alt="NFT 1">
         </div>
     </div>
 
     <script>
         const card = document.querySelector('.card');
-        const cardInner = document.querySelector('.card-inner');
-        const frontImg = document.querySelector('.front img');
-        const backDetails = document.querySelector('.back');
         const bgCards = document.querySelectorAll('.bg-card');
-
         const nfts = [
-            { img: 'nft1.png', name: 'Cosmic Voyager #1', price: '0.5 ETH', rarity: 'Legendary', created: '2025-08-01' },
-            { img: 'nft2.png', name: 'Nebula Knight #2', price: '0.3 ETH', rarity: 'Epic', created: '2025-08-02' },
-            { img: 'nft3.png', name: 'Star Phantom #3', price: '0.2 ETH', rarity: 'Rare', created: '2025-08-03' },
-            { img: 'nft4.png', name: 'Galaxy Warden #4', price: '0.4 ETH', rarity: 'Epic', created: '2025-08-04' },
-            { img: 'nft5.png', name: 'Astro Samurai #5', price: '0.6 ETH', rarity: 'Legendary', created: '2025-08-05' },
-            { img: 'nft6.png', name: 'Lunar Mystic #6', price: '0.25 ETH', rarity: 'Rare', created: '2025-08-06' },
-            { img: 'nft7.png', name: 'Void Explorer #7', price: '0.35 ETH', rarity: 'Epic', created: '2025-08-07' },
-            { img: 'nft8.png', name: 'Solar Titan #8', price: '0.7 ETH', rarity: 'Legendary', created: '2025-08-08' },
-            { img: 'nft9.png', name: 'Orbit Sorcerer #9', price: '0.15 ETH', rarity: 'Common', created: '2025-08-09' }
+            'nft1.png', 'nft2.png', 'nft3.png', 'nft4.png', 'nft5.png',
+            'nft6.png', 'nft7.png', 'nft8.png', 'nft9.png'
         ];
-
         let currentIndex = 0;
+        let lastScrollY = window.scrollY;
+        let isAnimating = false;
 
-        // Show card initially
+        // Show initial card
         setTimeout(() => {
-            card.classList.add('visible');
+            card.classList.add('active');
         }, 300);
 
         // Update background cards
         function updateBackgroundCards() {
-            bgCards[0].querySelector('img').src = nfts[(currentIndex + 1) % nfts.length].img;
-            bgCards[1].querySelector('img').src = nfts[(currentIndex + 2) % nfts.length].img;
+            bgCards[0].querySelector('img').src = nfts[(currentIndex + 1) % nfts.length];
+            bgCards[1].querySelector('img').src = nfts[(currentIndex + 2) % nfts.length];
         }
 
-        // Flip and cycle on click/touch
-        card.addEventListener('click', () => {
-            if (!card.classList.contains('flipped')) {
-                // Flip to back
-                card.classList.add('flipped');
-            } else {
-                // Flip back and change to next NFT
-                card.classList.remove('flipped');
+        // Handle scroll
+        window.addEventListener('scroll', () => {
+            if (isAnimating) return; // Prevent multiple animations
+
+            const currentScrollY = window.scrollY;
+            const scrollDirection = currentScrollY > lastScrollY ? 'down' : 'up';
+            lastScrollY = currentScrollY;
+
+            // Trigger change only when scrolling a significant amount
+            if (Math.abs(currentScrollY - lastScrollY) > 100) {
+                isAnimating = true;
+
+                // Slide out current card
+                card.style.transform = `translateY(${scrollDirection === 'down' ? '-100vh' : '100vh'}) rotate(5deg)`;
+                card.style.opacity = '0';
+
                 setTimeout(() => {
-                    currentIndex = (currentIndex + 1) % nfts.length;
-                    frontImg.src = nfts[currentIndex].img;
-                    frontImg.alt = nfts[currentIndex].name;
-                    backDetails.innerHTML = `
-                        <h2>${nfts[currentIndex].name}</h2>
-                        <p>Price: ${nfts[currentIndex].price}</p>
-                        <p>Rarity: ${nfts[currentIndex].rarity}</p>
-                        <p>Created: ${nfts[currentIndex].created}</p>
-                    `;
-                    updateBackgroundCards();
-                }, 600); // Match CSS transition duration
+                    // Update to next/previous NFT
+                    if (scrollDirection === 'down') {
+                        currentIndex = (currentIndex + 1) % nfts.length;
+                    } else {
+                        currentIndex = (currentIndex - 1 + nfts.length) % nfts.length;
+                    }
+
+                    // Update card image
+                    card.querySelector('img').src = nfts[currentIndex];
+                    card.querySelector('img').alt = `NFT ${currentIndex + 1}`;
+
+                    // Slide in new card
+                    card.style.transform = `translateY(${scrollDirection === 'down' ? '100px' : '-100px'}) rotate(5deg)`;
+                    card.style.opacity = '0';
+                    setTimeout(() => {
+                        card.style.transform = 'translateY(0) rotate(5deg)';
+                        card.style.opacity = '1';
+                        updateBackgroundCards();
+                        isAnimating = false;
+                    }, 50);
+                }, 800); // Match CSS transition duration
             }
         });
 
