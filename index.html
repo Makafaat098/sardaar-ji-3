@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Treasure-Inspired NFT Flip</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mobile-Optimized NFT Flip</title>
     <style>
         body {
             margin: 0;
-            background: linear-gradient(135deg, #0a0a1f, #1e2a3c, #0a0a1f);
+            background: linear-gradient(135deg, #0a0a1f, #1e2a3c);
             font-family: 'Inter', sans-serif;
             height: 100vh;
             display: flex;
@@ -15,6 +15,8 @@
             align-items: center;
             overflow: hidden;
             position: relative;
+            -webkit-overflow-scrolling: touch; /* Smooth touch scrolling */
+            touch-action: pan-y pinch-zoom; /* Restrict touch to swipe */
         }
 
         .gallery {
@@ -24,36 +26,37 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            perspective: 2500px;
+            perspective: 2000px;
         }
 
         .card {
             position: absolute;
-            width: 340px;
-            height: 510px;
+            width: 280px; /* Smaller for mobile */
+            height: 420px;
             opacity: 0;
-            transform: translateY(100px) rotate(2deg);
-            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), 0 0 15px rgba(255, 215, 0, 0.5);
-            border-radius: 20px;
-            border: 3px solid #ffd700;
+            transform: translate3d(0, 80px, 0) rotate(2deg);
+            transition: transform 0.25s ease-in-out, opacity 0.25s ease-in-out;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7), 0 0 8px rgba(255, 215, 0, 0.4);
+            border-radius: 16px;
+            border: 2px solid #ffd700;
             overflow: hidden;
             z-index: 20;
             cursor: pointer;
             will-change: transform, opacity;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            -webkit-tap-highlight-color: transparent; /* Remove tap highlight */
         }
 
         .card.active {
             opacity: 1;
-            transform: translateY(0) rotate(2deg);
+            transform: translate3d(0, 0, 0) rotate(2deg);
         }
 
         .card-inner {
             position: relative;
             width: 100%;
             height: 100%;
-            transition: transform 0.3s ease-in-out;
+            transition: transform 0.25s ease-in-out;
             transform-style: preserve-3d;
             will-change: transform;
         }
@@ -71,7 +74,7 @@
             width: 100%;
             height: 100%;
             backface-visibility: hidden;
-            border-radius: 20px;
+            border-radius: 16px;
             overflow: hidden;
             background: #fff;
         }
@@ -80,46 +83,66 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.4s ease-in-out;
+            transition: transform 0.3s ease-in-out;
+            pointer-events: none; /* Prevent image drag */
         }
 
-        .card:hover img {
-            transform: scale(1.12);
+        .card:hover img, .card:active img {
+            transform: scale(1.1);
         }
 
-        /* Background cards in an orbiting stack */
+        /* Background cards in orbiting stack */
         .bg-card {
             position: absolute;
-            width: 300px;
-            height: 450px;
+            width: 260px;
+            height: 390px;
             background: #fff;
-            border-radius: 20px;
-            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+            border-radius: 16px;
+            transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
             will-change: transform, opacity;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
             border: 1px solid rgba(255, 215, 0, 0.3);
         }
 
-        /* Orbiting positions for background cards */
-        .bg-card:nth-child(1) { transform: translateX(-50px) translateY(50px) rotate(-10deg); opacity: 0.3; z-index: 1; }
-        .bg-card:nth-child(2) { transform: translateX(50px) translateY(50px) rotate(10deg); opacity: 0.3; z-index: 1; }
-        .bg-card:nth-child(3) { transform: translateX(-70px) translateY(70px) rotate(-12deg); opacity: 0.25; z-index: 1; }
-        .bg-card:nth-child(4) { transform: translateX(70px) translateY(70px) rotate(12deg); opacity: 0.25; z-index: 1; }
-        .bg-card:nth-child(5) { transform: translateX(-90px) translateY(90px) rotate(-14deg); opacity: 0.2; z-index: 1; }
-        .bg-card:nth-child(6) { transform: translateX(90px) translateY(90px) rotate(14deg); opacity: 0.2; z-index: 1; }
-        .bg-card:nth-child(7) { transform: translateX(-110px) translateY(110px) rotate(-16deg); opacity: 0.15; z-index: 1; }
-        .bg-card:nth-child(8) { transform: translateX(110px) translateY(110px) rotate(16deg); opacity: 0.15; z-index: 1; }
+        .bg-card:nth-child(1) { transform: translate3d(-40px, 40px, -10px) rotate(-8deg); opacity: 0.3; z-index: 1; }
+        .bg-card:nth-child(2) { transform: translate3d(40px, 40px, -10px) rotate(8deg); opacity: 0.3; z-index: 1; }
+        .bg-card:nth-child(3) { transform: translate3d(-50px, 50px, -20px) rotate(-10deg); opacity: 0.25; z-index: 1; }
+        .bg-card:nth-child(4) { transform: translate3d(50px, 50px, -20px) rotate(10deg); opacity: 0.25; z-index: 1; }
+        .bg-card:nth-child(5) { transform: translate3d(-60px, 60px, -30px) rotate(-12deg); opacity: 0.2; z-index: 1; }
+        .bg-card:nth-child(6) { transform: translate3d(60px, 60px, -30px) rotate(12deg); opacity: 0.2; z-index: 1; }
+        .bg-card:nth-child(7) { transform: translate3d(-70px, 70px, -40px) rotate(-14deg); opacity: 0.15; z-index: 1; }
+        .bg-card:nth-child(8) { transform: translate3d(70px, 70px, -40px) rotate(14deg); opacity: 0.15; z-index: 1; }
 
         .bg-card img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            pointer-events: none;
         }
 
-        /* Subtle glow effect on hover for background cards */
         .bg-card:hover {
             opacity: 0.35;
             transform: scale(1.05);
+        }
+
+        /* Media query for smaller screens */
+        @media (max-width: 600px) {
+            .card {
+                width: 240px;
+                height: 360px;
+            }
+            .bg-card {
+                width: 220px;
+                height: 330px;
+            }
+            .bg-card:nth-child(1) { transform: translate3d(-30px, 30px, -10px) rotate(-8deg); }
+            .bg-card:nth-child(2) { transform: translate3d(30px, 30px, -10px) rotate(8deg); }
+            .bg-card:nth-child(3) { transform: translate3d(-35px, 35px, -20px) rotate(-10deg); }
+            .bg-card:nth-child(4) { transform: translate3d(35px, 35px, -20px) rotate(10deg); }
+            .bg-card:nth-child(5) { transform: translate3d(-40px, 40px, -30px) rotate(-12deg); }
+            .bg-card:nth-child(6) { transform: translate3d(40px, 40px, -30px) rotate(12deg); }
+            .bg-card:nth-child(7) { transform: translate3d(-45px, 45px, -40px) rotate(-14deg); }
+            .bg-card:nth-child(8) { transform: translate3d(45px, 45px, -40px) rotate(14deg); }
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
@@ -165,7 +188,7 @@
         requestAnimationFrame(() => {
             setTimeout(() => {
                 card.classList.add('active');
-            }, 200);
+            }, 150);
         });
 
         // Update background cards
@@ -194,28 +217,28 @@
                         currentIndex = (currentIndex - 1 + nfts.length) % nfts.length;
                     }
 
-                    // Update card image
+                    // Update card image instantly
                     frontImg.src = nfts[currentIndex];
                     frontImg.alt = `NFT ${currentIndex + 1}`;
 
                     // Reset flip and slide in from top
                     card.classList.remove('flip-right', 'flip-left');
-                    card.style.transform = 'translateY(-60px) rotate(2deg)';
+                    card.style.transform = 'translate3d(0, -50px, 0) rotate(2deg)';
                     card.style.opacity = '0';
 
                     requestAnimationFrame(() => {
                         setTimeout(() => {
-                            card.style.transform = 'translateY(0) rotate(2deg)';
+                            card.style.transform = 'translate3d(0, 0, 0) rotate(2deg)';
                             card.style.opacity = '1';
                             updateBackgroundCards();
                             isAnimating = false;
-                        }, 100); // Fast slide-in
+                        }, 50); // Ultra-fast slide-in
                     });
-                }, 300); // Fast flip
+                }, 250); // Ultra-fast flip
             });
         }
 
-        // Handle click
+        // Handle tap/click
         card.addEventListener('click', (e) => {
             const rect = card.getBoundingClientRect();
             const clickX = e.clientX - rect.left;
@@ -228,12 +251,13 @@
         let touchStartX = 0;
         card.addEventListener('touchstart', (e) => {
             touchStartX = e.touches[0].clientX;
+            e.preventDefault(); // Prevent default touch behavior
         });
 
         card.addEventListener('touchend', (e) => {
             const touchEndX = e.changedTouches[0].clientX;
             const deltaX = touchEndX - touchStartX;
-            if (Math.abs(deltaX) > 40) { // Slightly more sensitive swipe
+            if (Math.abs(deltaX) > 30) { // Very sensitive swipe
                 const direction = deltaX < 0 ? 'right' : 'left';
                 flipCard(direction);
             }
