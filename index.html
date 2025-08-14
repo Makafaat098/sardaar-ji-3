@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Unique 3D NFT Carousel</title>
+    <title>Unique 3D NFT Grid-Orbit</title>
     <style>
         body {
             margin: 0;
@@ -19,30 +19,30 @@
             touch-action: pan-y pinch-zoom;
         }
 
-        .carousel {
+        .showcase {
             position: relative;
             width: 100%;
             height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
-            perspective: 2500px;
+            perspective: 3000px;
             transform-style: preserve-3d;
         }
 
         .nft-card {
             position: absolute;
-            width: 260px;
-            height: 390px;
+            width: 240px;
+            height: 360px;
             opacity: 0;
-            transform: translate3d(0, 80px, -100px) scale(0.8) rotate(2deg);
-            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 255, 255, 0.4);
-            border-radius: 14px;
+            transform: translate3d(0, 80px, -100px) scale(0.7) rotate(3deg);
+            transition: transform 0.25s ease-in-out, opacity 0.25s ease-in-out;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.8), 0 0 8px rgba(0, 255, 255, 0.3);
+            border-radius: 12px;
             border: 2px solid #00f7ff;
             overflow: hidden;
             will-change: transform, opacity;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(0, 255, 255, 0.05));
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(0, 255, 255, 0.03));
             cursor: pointer;
             -webkit-tap-highlight-color: transparent;
         }
@@ -50,8 +50,8 @@
         .nft-card.active {
             opacity: 1;
             transform: translate3d(0, 0, 0) scale(1) rotate(0);
-            z-index: 30;
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.9), 0 0 15px rgba(0, 255, 255, 0.6);
+            z-index: 40;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.9), 0 0 12px rgba(0, 255, 255, 0.5);
             border: 3px solid #00f7ff;
         }
 
@@ -59,15 +59,15 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.3s ease-in-out;
+            transition: transform 0.25s ease-in-out;
             pointer-events: none;
         }
 
         .nft-card:hover img, .nft-card:active img {
-            transform: scale(1.1);
+            transform: scale(1.12);
         }
 
-        /* Background cards in 3D orbit */
+        /* Background cards in 3D grid-orbit */
         .nft-card.bg {
             z-index: 10;
         }
@@ -75,15 +75,15 @@
         /* Media query for smaller screens */
         @media (max-width: 600px) {
             .nft-card {
-                width: 220px;
-                height: 330px;
+                width: 200px;
+                height: 300px;
             }
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="carousel">
+    <div class="showcase">
         <!-- NFT cards -->
         <div class="nft-card active"><img src="nft1.png" alt="NFT 1"></div>
         <div class="nft-card bg"><img src="nft2.png" alt="NFT 2"></div>
@@ -97,7 +97,7 @@
     </div>
 
     <script>
-        const carousel = document.querySelector('.carousel');
+        const showcase = document.querySelector('.showcase');
         const nftCards = document.querySelectorAll('.nft-card');
         const nfts = [
             'nft1.png', 'nft2.png', 'nft3.png', 'nft4.png', 'nft5.png',
@@ -112,9 +112,19 @@
             img.src = src;
         });
 
-        // Initialize carousel positions
-        function updateCarousel() {
-            const angleStep = 360 / nfts.length;
+        // Initialize showcase positions
+        function updateShowcase() {
+            const positions = [
+                { x: -120, y: -80, z: -150, rotate: -8, opacity: 0.3 }, // Top-left
+                { x: 120, y: -80, z: -150, rotate: 8, opacity: 0.3 },  // Top-right
+                { x: -180, y: 0, z: -200, rotate: -10, opacity: 0.25 }, // Mid-left
+                { x: 180, y: 0, z: -200, rotate: 10, opacity: 0.25 },  // Mid-right
+                { x: -120, y: 80, z: -150, rotate: -8, opacity: 0.2 }, // Bottom-left
+                { x: 120, y: 80, z: -150, rotate: 8, opacity: 0.2 },  // Bottom-right
+                { x: -60, y: 100, z: -180, rotate: -6, opacity: 0.15 }, // Bottom-left-2
+                { x: 60, y: 100, z: -180, rotate: 6, opacity: 0.15 }  // Bottom-right-2
+            ];
+
             nftCards.forEach((card, i) => {
                 if (i === currentIndex) {
                     card.classList.add('active');
@@ -122,20 +132,18 @@
                     card.style.opacity = '1';
                 } else {
                     card.classList.remove('active');
-                    const angle = (i - currentIndex) * angleStep;
-                    const distance = 300; // Orbit radius
-                    const x = Math.sin((angle * Math.PI) / 180) * distance;
-                    const z = Math.cos((angle * Math.PI) / 180) * distance;
-                    card.style.transform = `translate3d(${x}px, 0, ${z - 200}px) scale(0.7) rotate(2deg)`;
-                    card.style.opacity = '0.2';
+                    const posIndex = (i - currentIndex + nfts.length) % nfts.length - 1;
+                    const pos = posIndex >= 0 ? positions[posIndex] : positions[0];
+                    card.style.transform = `translate3d(${pos.x}px, ${pos.y}px, ${pos.z}px) scale(0.7) rotate(${pos.rotate}deg)`;
+                    card.style.opacity = pos.opacity;
                 }
                 card.querySelector('img').src = nfts[i];
                 card.querySelector('img').alt = `NFT ${i + 1}`;
             });
         }
 
-        // Rotate carousel
-        function rotateCarousel(direction) {
+        // Change active NFT
+        function changeNFT(direction) {
             if (isAnimating) return;
             isAnimating = true;
 
@@ -147,51 +155,45 @@
             }
 
             // Animate transition
-            nftCards.forEach((card, i) => {
-                if (i === currentIndex) {
-                    card.classList.add('active');
-                    card.style.transform = 'translate3d(0, -50px, -100px) scale(0.8) rotate(0)';
-                    card.style.opacity = '0';
-                } else {
-                    card.classList.remove('active');
-                }
-            });
+            nftCards[currentIndex].classList.add('active');
+            nftCards[currentIndex].style.transform = 'translate3d(0, -40px, -100px) scale(0.8) rotate(0)';
+            nftCards[currentIndex].style.opacity = '0';
 
             requestAnimationFrame(() => {
                 setTimeout(() => {
-                    updateCarousel();
+                    updateShowcase();
                     isAnimating = false;
-                }, 300); // Match transition duration
+                }, 250); // Match transition duration
             });
         }
 
         // Handle tap/click
-        carousel.addEventListener('click', (e) => {
-            const rect = carousel.getBoundingClientRect();
+        showcase.addEventListener('click', (e) => {
+            const rect = showcase.getBoundingClientRect();
             const clickX = e.clientX - rect.left;
             const halfWidth = rect.width / 2;
             const direction = clickX > halfWidth ? 'right' : 'left';
-            rotateCarousel(direction);
+            changeNFT(direction);
         });
 
         // Handle swipe
         let touchStartX = 0;
-        carousel.addEventListener('touchstart', (e) => {
+        showcase.addEventListener('touchstart', (e) => {
             touchStartX = e.touches[0].clientX;
             e.preventDefault();
         });
 
-        carousel.addEventListener('touchend', (e) => {
+        showcase.addEventListener('touchend', (e) => {
             const touchEndX = e.changedTouches[0].clientX;
             const deltaX = touchEndX - touchStartX;
-            if (Math.abs(deltaX) > 30) {
+            if (Math.abs(deltaX) > 25) {
                 const direction = deltaX < 0 ? 'right' : 'left';
-                rotateCarousel(direction);
+                changeNFT(direction);
             }
         });
 
-        // Initialize carousel
-        updateCarousel();
+        // Initialize showcase
+        updateShowcase();
     </script>
 </body>
 </html>
