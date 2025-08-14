@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mobile-Optimized NFT Flip</title>
+    <title>Unique 3D NFT Carousel</title>
     <style>
         body {
             margin: 0;
-            background: linear-gradient(135deg, #0a0a1f, #1e2a3c);
+            background: radial-gradient(circle at center, #0a0a1f, #1e2a3c, #0a0a1f);
             font-family: 'Inter', sans-serif;
             height: 100vh;
             display: flex;
@@ -15,162 +15,90 @@
             align-items: center;
             overflow: hidden;
             position: relative;
-            -webkit-overflow-scrolling: touch; /* Smooth touch scrolling */
-            touch-action: pan-y pinch-zoom; /* Restrict touch to swipe */
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y pinch-zoom;
         }
 
-        .gallery {
+        .carousel {
             position: relative;
             width: 100%;
             height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
-            perspective: 2000px;
-        }
-
-        .card {
-            position: absolute;
-            width: 280px; /* Smaller for mobile */
-            height: 420px;
-            opacity: 0;
-            transform: translate3d(0, 80px, 0) rotate(2deg);
-            transition: transform 0.25s ease-in-out, opacity 0.25s ease-in-out;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7), 0 0 8px rgba(255, 215, 0, 0.4);
-            border-radius: 16px;
-            border: 2px solid #ffd700;
-            overflow: hidden;
-            z-index: 20;
-            cursor: pointer;
-            will-change: transform, opacity;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-            -webkit-tap-highlight-color: transparent; /* Remove tap highlight */
-        }
-
-        .card.active {
-            opacity: 1;
-            transform: translate3d(0, 0, 0) rotate(2deg);
-        }
-
-        .card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            transition: transform 0.25s ease-in-out;
+            perspective: 2500px;
             transform-style: preserve-3d;
-            will-change: transform;
         }
 
-        .card.flip-right .card-inner {
-            transform: rotateY(180deg);
-        }
-
-        .card.flip-left .card-inner {
-            transform: rotateY(-180deg);
-        }
-
-        .front {
+        .nft-card {
             position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            border-radius: 16px;
+            width: 260px;
+            height: 390px;
+            opacity: 0;
+            transform: translate3d(0, 80px, -100px) scale(0.8) rotate(2deg);
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 255, 255, 0.4);
+            border-radius: 14px;
+            border: 2px solid #00f7ff;
             overflow: hidden;
-            background: #fff;
+            will-change: transform, opacity;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(0, 255, 255, 0.05));
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .front img {
+        .nft-card.active {
+            opacity: 1;
+            transform: translate3d(0, 0, 0) scale(1) rotate(0);
+            z-index: 30;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.9), 0 0 15px rgba(0, 255, 255, 0.6);
+            border: 3px solid #00f7ff;
+        }
+
+        .nft-card img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             transition: transform 0.3s ease-in-out;
-            pointer-events: none; /* Prevent image drag */
-        }
-
-        .card:hover img, .card:active img {
-            transform: scale(1.1);
-        }
-
-        /* Background cards in orbiting stack */
-        .bg-card {
-            position: absolute;
-            width: 260px;
-            height: 390px;
-            background: #fff;
-            border-radius: 16px;
-            transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
-            will-change: transform, opacity;
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-        }
-
-        .bg-card:nth-child(1) { transform: translate3d(-40px, 40px, -10px) rotate(-8deg); opacity: 0.3; z-index: 1; }
-        .bg-card:nth-child(2) { transform: translate3d(40px, 40px, -10px) rotate(8deg); opacity: 0.3; z-index: 1; }
-        .bg-card:nth-child(3) { transform: translate3d(-50px, 50px, -20px) rotate(-10deg); opacity: 0.25; z-index: 1; }
-        .bg-card:nth-child(4) { transform: translate3d(50px, 50px, -20px) rotate(10deg); opacity: 0.25; z-index: 1; }
-        .bg-card:nth-child(5) { transform: translate3d(-60px, 60px, -30px) rotate(-12deg); opacity: 0.2; z-index: 1; }
-        .bg-card:nth-child(6) { transform: translate3d(60px, 60px, -30px) rotate(12deg); opacity: 0.2; z-index: 1; }
-        .bg-card:nth-child(7) { transform: translate3d(-70px, 70px, -40px) rotate(-14deg); opacity: 0.15; z-index: 1; }
-        .bg-card:nth-child(8) { transform: translate3d(70px, 70px, -40px) rotate(14deg); opacity: 0.15; z-index: 1; }
-
-        .bg-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
             pointer-events: none;
         }
 
-        .bg-card:hover {
-            opacity: 0.35;
-            transform: scale(1.05);
+        .nft-card:hover img, .nft-card:active img {
+            transform: scale(1.1);
+        }
+
+        /* Background cards in 3D orbit */
+        .nft-card.bg {
+            z-index: 10;
         }
 
         /* Media query for smaller screens */
         @media (max-width: 600px) {
-            .card {
-                width: 240px;
-                height: 360px;
-            }
-            .bg-card {
+            .nft-card {
                 width: 220px;
                 height: 330px;
             }
-            .bg-card:nth-child(1) { transform: translate3d(-30px, 30px, -10px) rotate(-8deg); }
-            .bg-card:nth-child(2) { transform: translate3d(30px, 30px, -10px) rotate(8deg); }
-            .bg-card:nth-child(3) { transform: translate3d(-35px, 35px, -20px) rotate(-10deg); }
-            .bg-card:nth-child(4) { transform: translate3d(35px, 35px, -20px) rotate(10deg); }
-            .bg-card:nth-child(5) { transform: translate3d(-40px, 40px, -30px) rotate(-12deg); }
-            .bg-card:nth-child(6) { transform: translate3d(40px, 40px, -30px) rotate(12deg); }
-            .bg-card:nth-child(7) { transform: translate3d(-45px, 45px, -40px) rotate(-14deg); }
-            .bg-card:nth-child(8) { transform: translate3d(45px, 45px, -40px) rotate(14deg); }
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="gallery">
-        <!-- Background cards for all NFTs -->
-        <div class="bg-card"><img src="nft2.png" alt="NFT 2"></div>
-        <div class="bg-card"><img src="nft3.png" alt="NFT 3"></div>
-        <div class="bg-card"><img src="nft4.png" alt="NFT 4"></div>
-        <div class="bg-card"><img src="nft5.png" alt="NFT 5"></div>
-        <div class="bg-card"><img src="nft6.png" alt="NFT 6"></div>
-        <div class="bg-card"><img src="nft7.png" alt="NFT 7"></div>
-        <div class="bg-card"><img src="nft8.png" alt="NFT 8"></div>
-        <div class="bg-card"><img src="nft9.png" alt="NFT 9"></div>
-        <!-- Main card -->
-        <div class="card active">
-            <div class="card-inner">
-                <div class="front"><img src="nft1.png" alt="NFT 1"></div>
-            </div>
-        </div>
+    <div class="carousel">
+        <!-- NFT cards -->
+        <div class="nft-card active"><img src="nft1.png" alt="NFT 1"></div>
+        <div class="nft-card bg"><img src="nft2.png" alt="NFT 2"></div>
+        <div class="nft-card bg"><img src="nft3.png" alt="NFT 3"></div>
+        <div class="nft-card bg"><img src="nft4.png" alt="NFT 4"></div>
+        <div class="nft-card bg"><img src="nft5.png" alt="NFT 5"></div>
+        <div class="nft-card bg"><img src="nft6.png" alt="NFT 6"></div>
+        <div class="nft-card bg"><img src="nft7.png" alt="NFT 7"></div>
+        <div class="nft-card bg"><img src="nft8.png" alt="NFT 8"></div>
+        <div class="nft-card bg"><img src="nft9.png" alt="NFT 9"></div>
     </div>
 
     <script>
-        const card = document.querySelector('.card');
-        const cardInner = document.querySelector('.card-inner');
-        const frontImg = document.querySelector('.front img');
-        const bgCards = document.querySelectorAll('.bg-card');
+        const carousel = document.querySelector('.carousel');
+        const nftCards = document.querySelectorAll('.nft-card');
         const nfts = [
             'nft1.png', 'nft2.png', 'nft3.png', 'nft4.png', 'nft5.png',
             'nft6.png', 'nft7.png', 'nft8.png', 'nft9.png'
@@ -184,87 +112,86 @@
             img.src = src;
         });
 
-        // Show initial card
-        requestAnimationFrame(() => {
-            setTimeout(() => {
-                card.classList.add('active');
-            }, 150);
-        });
-
-        // Update background cards
-        function updateBackgroundCards() {
-            const otherNfts = nfts.filter((_, i) => i !== currentIndex);
-            bgCards.forEach((bgCard, i) => {
-                bgCard.querySelector('img').src = otherNfts[i % otherNfts.length];
-                bgCard.querySelector('img').alt = `NFT ${(i % otherNfts.length) + 2}`;
+        // Initialize carousel positions
+        function updateCarousel() {
+            const angleStep = 360 / nfts.length;
+            nftCards.forEach((card, i) => {
+                if (i === currentIndex) {
+                    card.classList.add('active');
+                    card.style.transform = 'translate3d(0, 0, 0) scale(1) rotate(0)';
+                    card.style.opacity = '1';
+                } else {
+                    card.classList.remove('active');
+                    const angle = (i - currentIndex) * angleStep;
+                    const distance = 300; // Orbit radius
+                    const x = Math.sin((angle * Math.PI) / 180) * distance;
+                    const z = Math.cos((angle * Math.PI) / 180) * distance;
+                    card.style.transform = `translate3d(${x}px, 0, ${z - 200}px) scale(0.7) rotate(2deg)`;
+                    card.style.opacity = '0.2';
+                }
+                card.querySelector('img').src = nfts[i];
+                card.querySelector('img').alt = `NFT ${i + 1}`;
             });
         }
 
-        // Flip card function
-        function flipCard(direction) {
+        // Rotate carousel
+        function rotateCarousel(direction) {
             if (isAnimating) return;
             isAnimating = true;
 
-            // Apply flip animation
-            card.classList.add(direction === 'right' ? 'flip-right' : 'flip-left');
+            // Update index
+            if (direction === 'right') {
+                currentIndex = (currentIndex + 1) % nfts.length;
+            } else {
+                currentIndex = (currentIndex - 1 + nfts.length) % nfts.length;
+            }
+
+            // Animate transition
+            nftCards.forEach((card, i) => {
+                if (i === currentIndex) {
+                    card.classList.add('active');
+                    card.style.transform = 'translate3d(0, -50px, -100px) scale(0.8) rotate(0)';
+                    card.style.opacity = '0';
+                } else {
+                    card.classList.remove('active');
+                }
+            });
 
             requestAnimationFrame(() => {
                 setTimeout(() => {
-                    // Update to next/previous NFT
-                    if (direction === 'right') {
-                        currentIndex = (currentIndex + 1) % nfts.length;
-                    } else {
-                        currentIndex = (currentIndex - 1 + nfts.length) % nfts.length;
-                    }
-
-                    // Update card image instantly
-                    frontImg.src = nfts[currentIndex];
-                    frontImg.alt = `NFT ${currentIndex + 1}`;
-
-                    // Reset flip and slide in from top
-                    card.classList.remove('flip-right', 'flip-left');
-                    card.style.transform = 'translate3d(0, -50px, 0) rotate(2deg)';
-                    card.style.opacity = '0';
-
-                    requestAnimationFrame(() => {
-                        setTimeout(() => {
-                            card.style.transform = 'translate3d(0, 0, 0) rotate(2deg)';
-                            card.style.opacity = '1';
-                            updateBackgroundCards();
-                            isAnimating = false;
-                        }, 50); // Ultra-fast slide-in
-                    });
-                }, 250); // Ultra-fast flip
+                    updateCarousel();
+                    isAnimating = false;
+                }, 300); // Match transition duration
             });
         }
 
         // Handle tap/click
-        card.addEventListener('click', (e) => {
-            const rect = card.getBoundingClientRect();
+        carousel.addEventListener('click', (e) => {
+            const rect = carousel.getBoundingClientRect();
             const clickX = e.clientX - rect.left;
             const halfWidth = rect.width / 2;
             const direction = clickX > halfWidth ? 'right' : 'left';
-            flipCard(direction);
+            rotateCarousel(direction);
         });
 
         // Handle swipe
         let touchStartX = 0;
-        card.addEventListener('touchstart', (e) => {
+        carousel.addEventListener('touchstart', (e) => {
             touchStartX = e.touches[0].clientX;
-            e.preventDefault(); // Prevent default touch behavior
+            e.preventDefault();
         });
 
-        card.addEventListener('touchend', (e) => {
+        carousel.addEventListener('touchend', (e) => {
             const touchEndX = e.changedTouches[0].clientX;
             const deltaX = touchEndX - touchStartX;
-            if (Math.abs(deltaX) > 30) { // Very sensitive swipe
+            if (Math.abs(deltaX) > 30) {
                 const direction = deltaX < 0 ? 'right' : 'left';
-                flipCard(direction);
+                rotateCarousel(direction);
             }
         });
 
-        // Initialize background cards
-        updateBackgroundCards();
+        // Initialize carousel
+        updateCarousel();
     </script>
 </body>
 </html>
