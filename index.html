@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smooth NFT Flip</title>
+    <title>Ultra-Smooth NFT Flip</title>
     <style>
         body {
             margin: 0;
-            background: linear-gradient(135deg, #0f0f23, #1c2526);
-            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0a0a1f, #1a2a3a);
+            font-family: 'Inter', sans-serif;
             height: 100vh;
             display: flex;
             justify-content: center;
@@ -23,7 +23,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            perspective: 1500px;
+            perspective: 2000px;
         }
 
         .card {
@@ -31,10 +31,10 @@
             width: 320px;
             height: 480px;
             opacity: 0;
-            transform: translateY(120px) rotate(4deg);
-            transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.6), 0 0 10px rgba(255, 215, 0, 0.3);
-            border-radius: 16px;
+            transform: translateY(100px) rotate(3deg);
+            transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7), 0 0 12px rgba(255, 215, 0, 0.4);
+            border-radius: 18px;
             border: 2px solid #ffd700;
             overflow: hidden;
             z-index: 10;
@@ -44,14 +44,14 @@
 
         .card.active {
             opacity: 1;
-            transform: translateY(0) rotate(4deg);
+            transform: translateY(0) rotate(3deg);
         }
 
         .card-inner {
             position: relative;
             width: 100%;
             height: 100%;
-            transition: transform 0.6s ease-in-out;
+            transition: transform 0.4s ease-in-out;
             transform-style: preserve-3d;
             will-change: transform;
         }
@@ -69,7 +69,7 @@
             width: 100%;
             height: 100%;
             backface-visibility: hidden;
-            border-radius: 16px;
+            border-radius: 18px;
             overflow: hidden;
         }
 
@@ -81,7 +81,7 @@
         }
 
         .card:hover img {
-            transform: scale(1.08);
+            transform: scale(1.1);
         }
 
         /* Background cards for stacked effect */
@@ -90,67 +90,46 @@
             width: 300px;
             height: 460px;
             background: #fff;
-            border-radius: 16px;
-            opacity: 0.25;
-            transform: translateX(-25px) translateY(25px) rotate(-6deg);
-            z-index: 5;
-            transition: opacity 0.6s ease-in-out;
-            will-change: opacity;
+            border-radius: 18px;
+            transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+            will-change: transform, opacity;
         }
 
-        .bg-card:nth-child(2) {
-            transform: translateX(25px) translateY(25px) rotate(8deg);
-            opacity: 0.2;
-        }
+        /* Dynamic positioning for background cards */
+        .bg-card:nth-child(1) { transform: translateX(-30px) translateY(30px) rotate(-8deg); opacity: 0.3; z-index: 5; }
+        .bg-card:nth-child(2) { transform: translateX(30px) translateY(30px) rotate(8deg); opacity: 0.25; z-index: 4; }
+        .bg-card:nth-child(3) { transform: translateX(-40px) translateY(40px) rotate(-10deg); opacity: 0.2; z-index: 3; }
+        .bg-card:nth-child(4) { transform: translateX(40px) translateY(40px) rotate(10deg); opacity: 0.18; z-index: 2; }
+        .bg-card:nth-child(5) { transform: translateX(-50px) translateY(50px) rotate(-12deg); opacity: 0.15; z-index: 1; }
+        .bg-card:nth-child(6) { transform: translateX(50px) translateY(50px) rotate(12deg); opacity: 0.13; z-index: 1; }
+        .bg-card:nth-child(7) { transform: translateX(-60px) translateY(60px) rotate(-14deg); opacity: 0.1; z-index: 1; }
+        .bg-card:nth-child(8) { transform: translateX(60px) translateY(60px) rotate(14deg); opacity: 0.1; z-index: 1; }
 
         .bg-card img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-
-        /* Arrow buttons */
-        .arrow {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 2.5em;
-            color: #ffd700;
-            cursor: pointer;
-            z-index: 20;
-            user-select: none;
-            transition: transform 0.3s ease, opacity 0.3s ease;
-        }
-
-        .arrow:hover {
-            transform: translateY(-50%) scale(1.2);
-            opacity: 0.8;
-        }
-
-        .arrow-left {
-            left: calc(50% - 220px);
-        }
-
-        .arrow-right {
-            right: calc(50% - 220px);
-        }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="gallery">
-        <!-- Background cards -->
+        <!-- Background cards for all NFTs -->
         <div class="bg-card"><img src="nft2.png" alt="NFT 2"></div>
         <div class="bg-card"><img src="nft3.png" alt="NFT 3"></div>
+        <div class="bg-card"><img src="nft4.png" alt="NFT 4"></div>
+        <div class="bg-card"><img src="nft5.png" alt="NFT 5"></div>
+        <div class="bg-card"><img src="nft6.png" alt="NFT 6"></div>
+        <div class="bg-card"><img src="nft7.png" alt="NFT 7"></div>
+        <div class="bg-card"><img src="nft8.png" alt="NFT 8"></div>
+        <div class="bg-card"><img src="nft9.png" alt="NFT 9"></div>
         <!-- Main card -->
         <div class="card active">
             <div class="card-inner">
                 <div class="front"><img src="nft1.png" alt="NFT 1"></div>
             </div>
         </div>
-        <!-- Arrow buttons -->
-        <div class="arrow arrow-left" onclick="flipCard('left')">←</div>
-        <div class="arrow arrow-right" onclick="flipCard('right')">→</div>
     </div>
 
     <script>
@@ -165,7 +144,7 @@
         let currentIndex = 0;
         let isAnimating = false;
 
-        // Preload images for smooth transitions
+        // Preload images
         nfts.forEach(src => {
             const img = new Image();
             img.src = src;
@@ -175,13 +154,16 @@
         requestAnimationFrame(() => {
             setTimeout(() => {
                 card.classList.add('active');
-            }, 300);
+            }, 200);
         });
 
         // Update background cards
         function updateBackgroundCards() {
-            bgCards[0].querySelector('img').src = nfts[(currentIndex + 1) % nfts.length];
-            bgCards[1].querySelector('img').src = nfts[(currentIndex + 2) % nfts.length];
+            const otherNfts = nfts.filter((_, i) => i !== currentIndex);
+            bgCards.forEach((bgCard, i) => {
+                bgCard.querySelector('img').src = otherNfts[i % otherNfts.length];
+                bgCard.querySelector('img').alt = `NFT ${(i % otherNfts.length) + 2}`;
+            });
         }
 
         // Flip card function
@@ -207,22 +189,22 @@
 
                     // Reset flip and slide in from top
                     card.classList.remove('flip-right', 'flip-left');
-                    card.style.transform = 'translateY(-120px) rotate(4deg)';
+                    card.style.transform = 'translateY(-80px) rotate(3deg)';
                     card.style.opacity = '0';
 
                     requestAnimationFrame(() => {
                         setTimeout(() => {
-                            card.style.transform = 'translateY(0) rotate(4deg)';
+                            card.style.transform = 'translateY(0) rotate(3deg)';
                             card.style.opacity = '1';
                             updateBackgroundCards();
                             isAnimating = false;
-                        }, 50);
+                        }, 100); // Fast slide-in
                     });
-                }, 600); // Match CSS transition duration
+                }, 400); // Fast flip
             });
         }
 
-        // Handle click on card
+        // Handle click
         card.addEventListener('click', (e) => {
             const rect = card.getBoundingClientRect();
             const clickX = e.clientX - rect.left;
@@ -231,7 +213,7 @@
             flipCard(direction);
         });
 
-        // Handle swipe for mobile
+        // Handle swipe
         let touchStartX = 0;
         card.addEventListener('touchstart', (e) => {
             touchStartX = e.touches[0].clientX;
