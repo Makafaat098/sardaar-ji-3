@@ -1,105 +1,214 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sardaar Ji 3 Full Movie (2025) - Watch Online, Download, Cast & Story</title>
-  <meta name="description" content="Watch and download Sardaar Ji 3 full movie in HD. Get all details including release date, cast, trailer, story & direct links to watch online and download." />
-  <meta name="keywords" content="Sardaar Ji 3 full movie, watch Sardaar Ji 3 online, Sardaar Ji 3 download, Diljit Dosanjh movies, Punjabi movie 2025, Sardaar Ji 3 trailer" />
-  <meta name="author" content="YourName" />
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      line-height: 1.8;
-      background: #f7f7f7;
-      color: #222;
-      padding: 20px;
-      max-width: 900px;
-      margin: auto;
-    }
-    h1, h2 {
-      color: #c62828;
-    }
-    .thumbnail-wrapper {
-      text-align: center;
-      margin: 30px 0;
-    }
-    .thumbnail-wrapper img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    }
-    a {
-      color: #1976d2;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-    .button {
-      display: inline-block;
-      padding: 12px 24px;
-      margin: 20px 10px 30px 0;
-      background-color: #d32f2f;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      text-decoration: none;
-      font-weight: bold;
-      transition: background 0.3s;
-    }
-    .button:hover {
-      background-color: #b71c1c;
-    }
-    .ad-link {
-      color: #d32f2f;
-      font-weight: bold;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium NFT Collection</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+        }
+
+        .gallery {
+            position: relative;
+            width: 300px;
+            height: 450px;
+            perspective: 1500px;
+        }
+
+        .card {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.6s ease, opacity 0.8s ease, transform-origin 0.3s;
+            opacity: 0;
+            transform: translateY(100px) rotate(5deg); /* Initial tilt */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            z-index: 10;
+        }
+
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0) rotate(5deg); /* Maintain slight tilt */
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .front, .back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .front {
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid #ffd700;
+        }
+
+        .front img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .front:hover img {
+            transform: scale(1.05); /* Subtle zoom on hover */
+        }
+
+        .back {
+            background: linear-gradient(135deg, #2a2a4e, #1e1e3a);
+            color: #fff;
+            transform: rotateY(180deg);
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border: 2px solid #ffd700;
+        }
+
+        .back h2 {
+            margin: 0;
+            font-size: 1.5em;
+            color: #ffd700;
+        }
+
+        .back p {
+            margin: 5px 0;
+            font-size: 0.9em;
+            color: #ccc;
+        }
+
+        /* Background cards for stacked effect */
+        .bg-card {
+            position: absolute;
+            width: 280px;
+            height: 430px;
+            background: #fff;
+            border-radius: 15px;
+            opacity: 0.3;
+            transform: translateX(-20px) translateY(20px) rotate(-5deg);
+            z-index: 5;
+            transition: opacity 0.5s;
+        }
+
+        .bg-card:nth-child(2) {
+            transform: translateX(20px) translateY(20px) rotate(10deg);
+            opacity: 0.2;
+        }
+
+        .bg-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div class="gallery">
+        <!-- Background cards for stacked effect -->
+        <div class="bg-card"><img src="nft2.png" alt="NFT 2"></div>
+        <div class="bg-card"><img src="nft3.png" alt="NFT 3"></div>
+        <!-- Main card -->
+        <div class="card">
+            <div class="card-inner">
+                <div class="front"><img src="nft1.png" alt="NFT 1"></div>
+                <div class="back">
+                    <h2>Cosmic Voyager #1</h2>
+                    <p>Price: 0.5 ETH</p>
+                    <p>Rarity: Legendary</p>
+                    <p>Created: 2025-08-01</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-  <h1>Sardaar Ji 3 Full Movie (2025) – Cast, Story, Trailer, Watch Online & Download</h1>
+    <script>
+        const card = document.querySelector('.card');
+        const cardInner = document.querySelector('.card-inner');
+        const frontImg = document.querySelector('.front img');
+        const backDetails = document.querySelector('.back');
+        const bgCards = document.querySelectorAll('.bg-card');
 
-  <p><strong>Sardaar Ji 3</strong> is the upcoming blockbuster Punjabi movie starring <strong>Diljit Dosanjh</strong>, set to release in late 2025. The movie brings back the perfect mix of fantasy, action, and comedy that the franchise is known for. From an exciting plot to high-end VFX and witty humor, this film is expected to dominate the Punjabi box office.</p>
+        const nfts = [
+            { img: 'nft1.png', name: 'Cosmic Voyager #1', price: '0.5 ETH', rarity: 'Legendary', created: '2025-08-01' },
+            { img: 'nft2.png', name: 'Nebula Knight #2', price: '0.3 ETH', rarity: 'Epic', created: '2025-08-02' },
+            { img: 'nft3.png', name: 'Star Phantom #3', price: '0.2 ETH', rarity: 'Rare', created: '2025-08-03' },
+            { img: 'nft4.png', name: 'Galaxy Warden #4', price: '0.4 ETH', rarity: 'Epic', created: '2025-08-04' },
+            { img: 'nft5.png', name: 'Astro Samurai #5', price: '0.6 ETH', rarity: 'Legendary', created: '2025-08-05' },
+            { img: 'nft6.png', name: 'Lunar Mystic #6', price: '0.25 ETH', rarity: 'Rare', created: '2025-08-06' },
+            { img: 'nft7.png', name: 'Void Explorer #7', price: '0.35 ETH', rarity: 'Epic', created: '2025-08-07' },
+            { img: 'nft8.png', name: 'Solar Titan #8', price: '0.7 ETH', rarity: 'Legendary', created: '2025-08-08' },
+            { img: 'nft9.png', name: 'Orbit Sorcerer #9', price: '0.15 ETH', rarity: 'Common', created: '2025-08-09' }
+        ];
 
-  <div class="thumbnail-wrapper">
-    <img src="https://img.youtube.com/vi/-VmHIYqH2MI/maxresdefault.jpg" alt="Sardaar Ji 3 Thumbnail">
-  </div>
+        let currentIndex = 0;
 
-  <a class="button" href="https://www.profitableratecpm.com/yq9jnyr0ff?key=12adf136413cbe6ab5c18c69bbee6bd1" target="_blank">▶️ Watch Online Now</a>
-  <a class="button" href="https://www.profitableratecpm.com/yq9jnyr0ff?key=12adf136413cbe6ab5c18c69bbee6bd1" target="_blank">⬇️ Download in HD</a>
+        // Show card initially
+        setTimeout(() => {
+            card.classList.add('visible');
+        }, 300);
 
-  <h2>🧙‍♂️ Plot Summary</h2>
-  <p>The third installment picks up after the magical events of <em>Sardaar Ji 2</em>. Diljit returns as a ghost-busting farmer with new supernatural challenges and a new villain who threatens the balance between the human and spirit worlds.</p>
+        // Update background cards
+        function updateBackgroundCards() {
+            bgCards[0].querySelector('img').src = nfts[(currentIndex + 1) % nfts.length].img;
+            bgCards[1].querySelector('img').src = nfts[(currentIndex + 2) % nfts.length].img;
+        }
 
-  <p>The film cleverly mixes <strong>comedy, folklore, action and fantasy</strong>, which has become the signature of the <em>Sardaar Ji</em> series. This time, the stakes are higher and the journey wilder. <a class="ad-link" href="https://www.profitableratecpm.com/yq9jnyr0ff?key=12adf136413cbe6ab5c18c69bbee6bd1" target="_blank">Click here</a> to watch a sneak peek!</p>
+        // Flip and cycle on click/touch
+        card.addEventListener('click', () => {
+            if (!card.classList.contains('flipped')) {
+                // Flip to back
+                card.classList.add('flipped');
+            } else {
+                // Flip back and change to next NFT
+                card.classList.remove('flipped');
+                setTimeout(() => {
+                    currentIndex = (currentIndex + 1) % nfts.length;
+                    frontImg.src = nfts[currentIndex].img;
+                    frontImg.alt = nfts[currentIndex].name;
+                    backDetails.innerHTML = `
+                        <h2>${nfts[currentIndex].name}</h2>
+                        <p>Price: ${nfts[currentIndex].price}</p>
+                        <p>Rarity: ${nfts[currentIndex].rarity}</p>
+                        <p>Created: ${nfts[currentIndex].created}</p>
+                    `;
+                    updateBackgroundCards();
+                }, 600); // Match CSS transition duration
+            }
+        });
 
-  <h2>🎭 Cast & Crew</h2>
-  <ul>
-    <li><strong>Diljit Dosanjh</strong> as Sardaar Ji</li>
-    <li>Sonam Bajwa (rumored lead actress)</li>
-    <li>Director: Rohit Jugraj</li>
-    <li>Producer: White Hill Studios</li>
-    <li>Music: Jatinder Shah</li>
-  </ul>
-
-  <h2>🎵 Music & Soundtrack</h2>
-  <p>The music album of <strong>Sardaar Ji 3</strong> will feature energetic bhangra beats, romantic melodies, and quirky rap – mostly performed by Diljit himself. The soundtrack is expected to drop by October 2025. Stay tuned and <a href="https://www.profitableratecpm.com/yq9jnyr0ff?key=12adf136413cbe6ab5c18c69bbee6bd1" target="_blank">listen to it here</a> as soon as it's out.</p>
-
-  <h2>📅 Release Date</h2>
-  <p>The film is slated to hit cinemas in <strong>December 2025</strong>, just in time for the holiday season. Advanced ticket bookings and OTT streaming updates will be available soon.</p>
-
-  <h2>📥 Download Sardaar Ji 3 Full Movie</h2>
-  <p>You can now <strong>download Sardaar Ji 3 full movie in HD</strong> through our verified partner links. Make sure to use a secure connection while downloading.</p>
-
-  <a class="button" href="https://www.profitableratecpm.com/yq9jnyr0ff?key=12adf136413cbe6ab5c18c69bbee6bd1" target="_blank">📲 Download Full Movie</a>
-
-  <h2>📌 Final Thoughts</h2>
-  <p><strong>Sardaar Ji 3</strong> promises to deliver non-stop entertainment for Punjabi cinema fans. With an all-star cast, fantasy-driven storyline, and catchy music, it is poised to become one of the most loved Punjabi films ever.</p>
-
-  <p>For more updates, trailers, and full download links, <a class="ad-link" href="https://www.profitableratecpm.com/yq9jnyr0ff?key=12adf136413cbe6ab5c18c69bbee6bd1" target="_blank">visit the official page</a>.</p>
-
+        // Initialize background cards
+        updateBackgroundCards();
+    </script>
 </body>
 </html>
