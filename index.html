@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic NFT Scroll</title>
+    <title>Dynamic NFT Scroll with Side Flip</title>
     <style>
         body {
             margin: 0;
@@ -42,7 +42,32 @@
             transform: translateY(0) rotate(5deg); /* Maintain slight tilt */
         }
 
-        .card img {
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+
+        .card.flip-right .card-inner {
+            transform: rotateY(180deg); /* Flip right for scroll down */
+        }
+
+        .card.flip-left .card-inner {
+            transform: rotateY(-180deg); /* Flip left for scroll up */
+        }
+
+        .front {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .front img {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -86,12 +111,16 @@
         <div class="bg-card"><img src="nft3.png" alt="NFT 3"></div>
         <!-- Main card -->
         <div class="card active">
-            <img src="nft1.png" alt="NFT 1">
+            <div class="card-inner">
+                <div class="front"><img src="nft1.png" alt="NFT 1"></div>
+            </div>
         </div>
     </div>
 
     <script>
         const card = document.querySelector('.card');
+        const cardInner = document.querySelector('.card-inner');
+        const frontImg = document.querySelector('.front img');
         const bgCards = document.querySelectorAll('.bg-card');
         const nfts = [
             'nft1.png', 'nft2.png', 'nft3.png', 'nft4.png', 'nft5.png',
@@ -118,15 +147,14 @@
 
             const currentScrollY = window.scrollY;
             const scrollDirection = currentScrollY > lastScrollY ? 'down' : 'up';
-            lastScrollY = currentScrollY;
+            const scrollDistance = Math.abs(currentScrollY - lastScrollY);
 
-            // Trigger change only when scrolling a significant amount
-            if (Math.abs(currentScrollY - lastScrollY) > 100) {
+            // Trigger flip on significant scroll
+            if (scrollDistance > 100) {
                 isAnimating = true;
 
-                // Slide out current card
-                card.style.transform = `translateY(${scrollDirection === 'down' ? '-100vh' : '100vh'}) rotate(5deg)`;
-                card.style.opacity = '0';
+                // Apply flip animation based on scroll direction
+                card.classList.add(scrollDirection === 'down' ? 'flip-right' : 'flip-left');
 
                 setTimeout(() => {
                     // Update to next/previous NFT
@@ -137,18 +165,22 @@
                     }
 
                     // Update card image
-                    card.querySelector('img').src = nfts[currentIndex];
-                    card.querySelector('img').alt = `NFT ${currentIndex + 1}`;
+                    frontImg.src = nfts[currentIndex];
+                    frontImg.alt = `NFT ${currentIndex + 1}`;
 
-                    // Slide in new card
-                    card.style.transform = `translateY(${scrollDirection === 'down' ? '100px' : '-100px'}) rotate(5deg)`;
+                    // Reset flip and slide in from top
+                    card.classList.remove('flip-right', 'flip-left');
+                    card.style.transform = 'translateY(-100px) rotate(5deg)';
                     card.style.opacity = '0';
+
                     setTimeout(() => {
                         card.style.transform = 'translateY(0) rotate(5deg)';
                         card.style.opacity = '1';
                         updateBackgroundCards();
                         isAnimating = false;
                     }, 50);
+
+                    lastScrollY = currentScrollY;
                 }, 800); // Match CSS transition duration
             }
         });
